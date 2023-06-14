@@ -19,7 +19,10 @@ exports.createTranfer = catchAsync(async (req, res, next) => {
   // Aqui hago un if para ver si exite el usuario que va recibir la platica
   if (!userReceivesMoney) {
     return next(
-      new AppError("No se encontro el usuario  o no existe 👁️", 400)
+      new AppError(
+        `No se encontro el ${accountNumber} o no existe 👁️`,
+        400
+      )
     );
   }
 
@@ -36,13 +39,21 @@ exports.createTranfer = catchAsync(async (req, res, next) => {
 
   // Verificar si los usuarios existen
   if (!userMakeTransfer || !userReceivesMoney) {
-    return next(new AppError("No se encontro el usuario 👺", 400));
+    return next(
+      new AppError(
+        `No se encontro el usuario ${senderUserId} 👺`,
+        400
+      )
+    );
   }
 
   // * 5 Verificar si el id del usuario que va a recibir el dinero es igual al id del usuario que va a enviar el dinero , enviar un error
   if (userReceivesMoney.id === userMakeTransfer.id) {
     return next(
-      new AppError("No puedes transferir dinero a ti mismo  🤡", 400)
+      new AppError(
+        `No puedes transferir dinero a ti mismo a esta cuenta estas enviado ${accountNumber} 🤡`,
+        400
+      )
     );
   }
 
@@ -74,17 +85,16 @@ exports.createTranfer = catchAsync(async (req, res, next) => {
   // * 11 Guardar o crear la transferencia en la base de datos
   const createTransfer = await Transfer.create({
     amount,
-    // Este va a ser el numero de la cuenta de la cuenta que va a enviar el dinero
+    // Este va a ser el numero de la cuenta que va a enviar el dinero
     senderUserId,
-    // Este va a ser el numero de la cuenta de la cuenta que va a recibir el dinero
+    // Este va a ser el numero de la cuenta que va a recibir el dinero
     receiverUserId,
   });
 
   // * 12 Enviar la respuesta al cliente que la transferencia fue exitosa
   return res.status(200).json({
     status: "success",
-    message:
-      " 👁️ La trasferencia fue exitosa y se ha guardado en la base de datos correctamente 👺 ",
+    message: ` 👁️ La trasferencia fue exitosa y se ha guardado en la base de datos correctamente a esta cuenta se envio ${accountNumber} 👺 `,
     createTransfer,
   });
 });

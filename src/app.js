@@ -21,7 +21,10 @@ app.use(express.json());
 app.use(cors());
 
 // Morgan sirve para ver las peticiones en consola
-app.use(morgan("dev"));
+// Este if es para tener a morgan solo en desarrollo de la app
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 
 // ** Ruta principales ** //
 app.use("/api/v1/users", usersRouter);

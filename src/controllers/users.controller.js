@@ -55,7 +55,12 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // Sino existe el usuario, enviar un error
   if (!user) {
-    next(new AppError("El usuario no existe 🥷🏾", 404));
+    next(
+      new AppError(
+        `El numero de cuenta ${accountNumber} o la contraseña no existe  🥷🏾`,
+        404
+      )
+    );
   }
 
   // Enviar la respuesta al cliente
@@ -85,7 +90,9 @@ exports.getHistory = catchAsync(async (req, res, next) => {
   // Si no existe el historial, enviar un error
   if (history.length === 0) {
     return next(
-      new AppError("No tiene historial de transferencias 🦊 ")
+      new AppError(
+        `No tiene historial de transferencias el ${userId} 🦊 `
+      )
     );
   }
 
