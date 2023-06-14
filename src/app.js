@@ -31,7 +31,15 @@ app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/transfer", transferRouter);
 
 // !! Para todas las rutas que no sea correctas
-app.use("*", globalErrorHandler);
+app.use("*", (req, res, next) => {
+  return next(
+    new AppError(
+      `La ruta es incorrecta o no valida ${req.originalUrl} 🚑 `,
+      404,
+      "fail"
+    )
+  );
+});
 
 // ** Middleware de errores ** //
 app.use(globalErrorHandler);
