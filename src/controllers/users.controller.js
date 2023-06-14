@@ -27,7 +27,7 @@ exports.register = catchAsync(async (req, res, next) => {
   const user = await User.create({
     name,
     accountNumber,
-    password: secretPassword,
+    password, // password: secretPassword => Proceso
     amount,
   });
 
